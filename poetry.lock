@@ -71,14 +71,14 @@ dev = ["build (==0.8.0)", "flake8 (==4.0.1)", "hashin (==0.17.0)", "pip-tools (=
 
 [[package]]
 name = "boto3"
-version = "1.24.47"
+version = "1.24.48"
 description = "The AWS SDK for Python"
 category = "dev"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.47,<1.28.0"
+botocore = ">=1.27.48,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -87,7 +87,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.47"
+version = "1.27.48"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -580,18 +580,22 @@ python-versions = ">=3.8"
 
 [[package]]
 name = "nzshm-common"
-version = "0.1.1"
+version = "0.2.0"
 description = "A small pure python library for shared NZ NSHM data like locations."
 category = "main"
 optional = false
 python-versions = "^3.7.0"
 develop = false
 
+[package.extras]
+test = []
+dev = []
+
 [package.source]
 type = "git"
 url = "https://github.com/GNS-Science/nzshm-common-py.git"
-reference = "d95df51787c1b42e471e9d8e793c119d07a95e74"
-resolved_reference = "d95df51787c1b42e471e9d8e793c119d07a95e74"
+reference = "42f147ea944acbc6e24f8aaf3bfb7e499f0b28ab"
+resolved_reference = "42f147ea944acbc6e24f8aaf3bfb7e499f0b28ab"
 
 [[package]]
 name = "packaging"
@@ -1014,7 +1018,7 @@ develop = false
 
 [package.dependencies]
 numpy = "^1.23.1"
-nzshm-common = {git = "https://github.com/GNS-Science/nzshm-common-py.git", rev = "d95df51787c1b42e471e9d8e793c119d07a95e74"}
+nzshm-common = {git = "https://github.com/GNS-Science/nzshm-common-py.git", rev = "42f147ea944acbc6e24f8aaf3bfb7e499f0b28ab"}
 pandas = "^1.4.3"
 pynamodb = "^5.2.1"
 pynamodb-attributes = "^0.3.2"
@@ -1027,8 +1031,8 @@ doc = []
 [package.source]
 type = "git"
 url = "https://github.com/GNS-Science/toshi-hazard-store.git"
-reference = "92abb7f6804f2f07d947c62a6f2befe6c111f0c1"
-resolved_reference = "92abb7f6804f2f07d947c62a6f2befe6c111f0c1"
+reference = "093901e5d49de507709209e8671f09feac634603"
+resolved_reference = "093901e5d49de507709209e8671f09feac634603"
 
 [[package]]
 name = "tox"
@@ -1193,7 +1197,7 @@ test = []
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "13f023ecc7cf50137302778046e45edd4e8eecde7d1f0c3668e09e8592b2e849"
+content-hash = "c2f97d833f683dabe3c79fbac2d483c57ea7beb37b822a655b7d85e6c078db7e"
 
 [metadata.files]
 astunparse = [
@@ -1237,12 +1241,12 @@ bleach = [
     {file = "bleach-5.0.1.tar.gz", hash = "sha256:0d03255c47eb9bd2f26aa9bb7f2107732e7e8fe195ca2f64709fcf3b0a4a085c"},
 ]
 boto3 = [
-    {file = "boto3-1.24.47-py3-none-any.whl", hash = "sha256:8fa1e0ce6e95a2b7da1d1a9992aee7b05c5478538ea9052e2753999fc46f2f97"},
-    {file = "boto3-1.24.47.tar.gz", hash = "sha256:02b30776fd1b6c0fdf2d72d1365e5adcc6f0baa6540a450946b1a02db3a5ace6"},
+    {file = "boto3-1.24.48-py3-none-any.whl", hash = "sha256:632676a480854d7c18ae634e2e83a93dc27211b88e19340e047bbd432128819e"},
+    {file = "boto3-1.24.48.tar.gz", hash = "sha256:db27c33a7ccccbf76035ab47e92054ce8ab98b809cf49eb15a2502eedc3ba332"},
 ]
 botocore = [
-    {file = "botocore-1.27.47-py3-none-any.whl", hash = "sha256:262d7b10ca2194b9ba63fd972185729e3ee38f99faed518d62580f93af900ad0"},
-    {file = "botocore-1.27.47.tar.gz", hash = "sha256:160a3fa8e3062a48299a1b44ef2ec81f9a58cd3edd0da58808e5c2cc8dd9257f"},
+    {file = "botocore-1.27.48-py3-none-any.whl", hash = "sha256:5958ef6dd3b0f84eb1ee0aac75499ac504fcc0787fd6611be727968d51dcbfa7"},
+    {file = "botocore-1.27.48.tar.gz", hash = "sha256:8de2f4285046ed306439723a11706067d6901c3f7be418b7b104ba8e002b5638"},
 ]
 bump2version = [
     {file = "bump2version-1.0.1-py2.py3-none-any.whl", hash = "sha256:37f927ea17cde7ae2d7baf832f8e80ce3777624554a653006c9144f8017fe410"},

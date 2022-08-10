@@ -26,7 +26,7 @@ python = ">=3.8,<4.0"
 click = "8.0.1"
 pandas = "^1.4.3"
 toml = "^0.10.2"
-toshi-hazard-store = {git = "https://github.com/GNS-Science/toshi-hazard-store.git", rev = "92abb7f6804f2f07d947c62a6f2befe6c111f0c1"}
+toshi-hazard-store = {git = "https://github.com/GNS-Science/toshi-hazard-store.git", rev = "093901e5d49de507709209e8671f09feac634603"}
 
 [tool.poetry.dev-dependencies]
 
