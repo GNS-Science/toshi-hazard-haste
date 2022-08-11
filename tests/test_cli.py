@@ -2,9 +2,12 @@
 """Tests for `toshi_hazard_haste` package."""
 
 import pytest
+from pathlib import Path
 from click.testing import CliRunner
 
 from toshi_hazard_haste import cli
+
+config = Path(__file__).parent / 'fixtures' / 'config.toml'
 
 
 @pytest.fixture
@@ -50,3 +53,11 @@ def test_cli_dry_run():
     help_result = runner.invoke(cli.cli_gridded_hazard, ['--dry-run'])
     assert help_result.exit_code == 0
     assert 'dry-run None None None' in help_result.output
+
+
+def test_cli_config():
+    runner = CliRunner()
+    help_result = runner.invoke(cli.cli_gridded_hazard, ['--config', str(config), '--dry-run'])
+    print(help_result.output)
+    assert "dry-run ['SLT_TAG_FINAL'] ['PGA', 'SA(0.5)', 'SA(1.5)'] [400]" in help_result.output
+    assert help_result.exit_code == 0

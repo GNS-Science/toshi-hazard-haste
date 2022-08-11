@@ -7,7 +7,7 @@ import click
 import toml
 from nzshm_common.grids import RegionGrid
 
-from toshi_hazard_haste.gridded_hazard import calc_gridded_hazard
+# from toshi_hazard_haste.gridded_hazard import calc_gridded_hazard
 
 log = logging.getLogger()
 logging.basicConfig(level=logging.INFO)

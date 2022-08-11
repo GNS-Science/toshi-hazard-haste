@@ -1,0 +1,9 @@
+# cli command configuration example
+
+hazard_model_ids = ["SLT_TAG_FINAL"]
+# hazard_model_ids = ["SLT_v5_gmm_v0"]
+vs30s = [ 400 ]
+# imts = ["PGA", "SA(0.1)", "SA(0.2)", "SA(0.3)", "SA(0.5)", "SA(1.0)", "SA(1.5)", "SA(2.0)""]
+
+imts = ["PGA", "SA(0.5)", "SA(1.5)" ] # SANJAY for gridded
+site_lists = ["NZ_0_2_NB_1_1"]         #0.2 degree NZ grid

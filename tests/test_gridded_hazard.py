@@ -74,6 +74,11 @@ class GriddedHazardTest(unittest.TestCase):
         return super(GriddedHazardTest, self).tearDown()
 
     def test_calculate_gridded_hazard(self):
+        """This test is a TDD hack, iterating on the features and testing them all in one humungous test.
+
+        TODO: split up this and test the parts individually.
+        """
+
         # load fixture and create sample hazard_curves
 
         with ths_model.HazardAggregation.batch_write() as batch:
@@ -86,8 +91,11 @@ class GriddedHazardTest(unittest.TestCase):
         # builing & saving the models
         poe_levels = [0.02, 0.1]
         location_grid_id = "NZ_0_2_NB_1_1"  # the NZ 0.2 degree grid
+
         with model.GriddedHazard.batch_write() as batch:
-            for gridded_haz in calc_gridded_hazard(location_grid_id, poe_levels, [HAZARD_MODEL_ID], vs30s, imts, aggs):
+            for gridded_haz in calc_gridded_hazard(
+                location_grid_id, poe_levels, [HAZARD_MODEL_ID], vs30s, imts[:2], aggs[:2]
+            ):
                 batch.save(gridded_haz)
 
         # test we can retrieve something
@@ -98,3 +106,5 @@ class GriddedHazardTest(unittest.TestCase):
             count += 1
 
         print('table scan produced %s gridded_hazard rows and %s poe levels' % (count, poes))
+        self.assertEqual(count, 8)
+        self.assertEqual(poes, 16)
