@@ -21,7 +21,7 @@ def compute_hazard_at_poe(
     xp = np.flip(np.log(annual_poes))  # type: ignore
     yp = np.flip(np.log(ground_accels))  # type: ignore
 
-    assert np.all(np.diff(xp) > 0)  # raise is x_accel_levels not increasing or at least not dropping,
+    assert np.all(np.diff(xp) >= 0)  # raise is x_accel_levels not increasing or at least not dropping,
 
     return np.exp(np.interp(np.log(1 / return_period), xp, yp))  # type: ignore
 

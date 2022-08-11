@@ -7,6 +7,8 @@ import click
 import toml
 from nzshm_common.grids import RegionGrid
 
+from toshi_hazard_haste.gridded_hazard import calc_gridded_hazard
+
 log = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
 logging.getLogger('nshm_toshi_client.toshi_client_base').setLevel(logging.INFO)
@@ -33,7 +35,7 @@ log.addHandler(screen_handler)
 @click.option('-lsl', '--list-site-lists', help='print the list of sites list ENUMs and exit', is_flag=True)
 @click.option('-v', '--verbose', is_flag=True)
 @click.option('-D', '--dry-run', is_flag=True)
-def calc_gridded_hazard(hazard_model_ids, site_lists, imts, aggs, vs30s, config, list_site_lists, verbose, dry_run):
+def cli_gridded_hazard(hazard_model_ids, site_lists, imts, aggs, vs30s, config, list_site_lists, verbose, dry_run):
     """Process gridded hazard for a given set of arguments."""
 
     if list_site_lists:
@@ -73,4 +75,4 @@ def calc_gridded_hazard(hazard_model_ids, site_lists, imts, aggs, vs30s, config,
 
 
 if __name__ == "__main__":
-    calc_gridded_hazard()  # pragma: no cover
+    cli_gridded_hazard()  # pragma: no cover

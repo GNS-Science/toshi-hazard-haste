@@ -27,26 +27,26 @@ def test_content(response):
 def test_command_line_interface():
     """Test the CLI."""
     runner = CliRunner()
-    result = runner.invoke(cli.calc_gridded_hazard)
+    result = runner.invoke(cli.cli_gridded_hazard)
     assert result.exit_code == 0
 
 
 def test_cli_help():
     runner = CliRunner()
-    help_result = runner.invoke(cli.calc_gridded_hazard, ['--help'])
+    help_result = runner.invoke(cli.cli_gridded_hazard, ['--help'])
     assert help_result.exit_code == 0
     assert 'Show this message and exit.' in help_result.output
 
 
 def test_cli_list_site_lists():
     runner = CliRunner()
-    help_result = runner.invoke(cli.calc_gridded_hazard, ['--list-site-lists'])
+    help_result = runner.invoke(cli.cli_gridded_hazard, ['--list-site-lists'])
     assert help_result.exit_code == 0
     assert 'ENUM name' in help_result.output
 
 
 def test_cli_dry_run():
     runner = CliRunner()
-    help_result = runner.invoke(cli.calc_gridded_hazard, ['--dry-run'])
+    help_result = runner.invoke(cli.cli_gridded_hazard, ['--dry-run'])
     assert help_result.exit_code == 0
     assert 'dry-run None None None' in help_result.output
