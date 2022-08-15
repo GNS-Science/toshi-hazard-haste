@@ -13,6 +13,7 @@ from toshi_hazard_haste import model
 from .gridded_poe import compute_hazard_at_poe
 
 log = logging.getLogger(__name__)
+INVESTIGATION_TIME = 50
 
 
 def calc_gridded_hazard(
@@ -22,19 +23,27 @@ def calc_gridded_hazard(
     vs30s: Iterable[float],
     imts: Iterable[str],
     aggs: Iterable[str],
+    filter_locations: Iterable[CodedLocation] = None,
 ) -> Iterator[model.GriddedHazard]:
 
+    log.debug(
+        'calc_gridded_hazard( grid: %s poes: %s models: %s vs30s: %s imts: %s aggs: %s'
+        % (location_grid_id, poe_levels, hazard_model_ids, vs30s, imts, aggs)
+    )
     count = 0
     grid = RegionGrid[location_grid_id]
-    grid_locs = grid.load()
 
-    # build a dictionary of CodedLocations
-    locations = {}
-    for loc in list(map(lambda x: CodedLocation(x[0], x[1], resolution=0.001), grid_locs))[510:530]:
-        locations[loc.code] = dict(loc=loc)
-    location_keys = list(locations.keys())
-    # print(location_keys)
-    # assert 0
+    print(grid.resolution)
+    locations = list(
+        map(lambda grd_loc: CodedLocation(grd_loc[0], grd_loc[1], resolution=grid.resolution), grid.load())
+    )
+
+    if filter_locations:
+        locations = list(set(locations).intersection(set(filter_locations)))
+
+    location_keys = [loc.resample(0.001).code for loc in locations]
+
+    log.debug('location_keys: %s' % location_keys)
 
     for (poe_lvl, hazard_model_id, vs30, imt, agg) in itertools.product(
         poe_levels, hazard_model_ids, vs30s, imts, aggs
@@ -44,7 +53,7 @@ def calc_gridded_hazard(
             accel_levels = [val.lvl for val in haz.values]
             poe_values = [val.val for val in haz.values]
             index = location_keys.index(haz.nloc_001)
-            grid_poes[index] = compute_hazard_at_poe(poe_lvl, accel_levels, poe_values, 1)
+            grid_poes[index] = compute_hazard_at_poe(poe_lvl, accel_levels, poe_values, INVESTIGATION_TIME)
             log.debug('replaced %s with %s' % (index, grid_poes[index]))
 
         yield model.GriddedHazard.new_model(

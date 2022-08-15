@@ -10,6 +10,7 @@ from pynamodb.attributes import Attribute, UnicodeAttribute, VersionAttribute
 from pynamodb.constants import STRING
 from pynamodb.models import Model
 from pynamodb_attributes import FloatAttribute, TimestampAttribute
+from toshi_hazard_store.config import DEPLOYMENT_STAGE, IS_OFFLINE, REGION  # we can share THS settings for model
 
 
 def datetime_now():
@@ -17,10 +18,6 @@ def datetime_now():
 
 
 log = logging.getLogger(__name__)
-
-DEPLOYMENT_STAGE = 'LOCAL'
-REGION = 'ap-southeast-2'
-IS_OFFLINE = False
 
 
 class CompressedJsonicAttribute(Attribute):
@@ -31,7 +28,7 @@ class CompressedJsonicAttribute(Attribute):
     attr_type = STRING
 
     def serialize(self, value: Any) -> str:
-        return compress_string(json.dumps(value))
+        return compress_string(json.dumps(value))  # could this be pickle??
 
     def deserialize(self, value: str) -> Union[Dict, List]:
         return json.loads(decompress_string(value))

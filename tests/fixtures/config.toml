@@ -6,4 +6,6 @@ vs30s = [ 400 ]
 # imts = ["PGA", "SA(0.1)", "SA(0.2)", "SA(0.3)", "SA(0.5)", "SA(1.0)", "SA(1.5)", "SA(2.0)""]
 
 imts = ["PGA", "SA(0.5)", "SA(1.5)" ] # SANJAY for gridded
-site_lists = ["NZ_0_2_NB_1_1"]         #0.2 degree NZ grid
+site_list = "NZ_0_2_NB_1_1"         #0.2 degree NZ grid
+poes = [0.1, 0.02]
+aggs = ["mean"]
