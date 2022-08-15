@@ -29,10 +29,9 @@ python = ">=3.8,<4.0"
 click = "8.0.1"
 pandas = "^1.4.3"
 toml = "^0.10.2"
-# toshi-hazard-store = {git = "https://github.com/GNS-Science/toshi-hazard-store.git", rev = "57a9e5fa819b6916d0a9496ce3368dc2eb4a971f", extras = ["geometry"]}
-# nzshm-common = {git = "https://github.com/GNS-Science/nzshm-common-py.git", rev = "9185542c5c82227f8ebe01963d7d40e0f24a91c3", extras = ["geometry"]}
 matplotlib = "^3.5.3"
 toshi-hazard-store = {git = "https://github.com/GNS-Science/toshi-hazard-store.git", rev = "11a8dc13e74dcaa02349a1fe7b326ac52937ceec"}
+geopandas = "^0.11.1"
 
 [tool.poetry.dev-dependencies]
 
