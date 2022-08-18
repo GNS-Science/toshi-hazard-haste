@@ -12,8 +12,8 @@ import toml
 from nzshm_common.geometry.geometry import create_square_tile
 from nzshm_common.grids import RegionGrid
 from nzshm_common.location import CodedLocation
+from toshi_hazard_store import model
 
-from toshi_hazard_haste import model
 from toshi_hazard_haste.gridded_hazard import calc_gridded_hazard
 
 log = logging.getLogger()

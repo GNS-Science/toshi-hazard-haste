@@ -6,9 +6,7 @@ from typing import Iterable, Iterator, List
 
 from nzshm_common.grids import RegionGrid
 from nzshm_common.location import CodedLocation
-from toshi_hazard_store import query_v3
-
-from toshi_hazard_haste import model
+from toshi_hazard_store import model, query_v3
 
 from .gridded_poe import compute_hazard_at_poe
 

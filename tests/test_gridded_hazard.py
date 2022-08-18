@@ -8,12 +8,11 @@ import csv
 # import time
 from pathlib import Path
 
-from toshi_hazard_haste import model
 from toshi_hazard_haste.gridded_hazard import calc_gridded_hazard
 
 from moto import mock_dynamodb
 
-from toshi_hazard_store import model as ths_model
+from toshi_hazard_store import model, query
 
 from nzshm_common.grids import RegionGrid
 from nzshm_common.location import CodedLocation
@@ -44,12 +43,12 @@ def hazard_aggregation_models(csv_path, limit=100):
         poe_values = row[5:]
         lvps = list(
             map(
-                lambda x: ths_model.LevelValuePairAttribute(lvl=float(x[0]), val=float(x[1])),
+                lambda x: model.LevelValuePairAttribute(lvl=float(x[0]), val=float(x[1])),
                 zip(poe_accels, poe_values),
             )
         )
         loc = CodedLocation(float(lat), float(lon), resolution=0.001)
-        yield ths_model.HazardAggregation(
+        yield model.HazardAggregation(
             values=lvps,
             vs30=float(vs30),
             agg=agg,
@@ -61,14 +60,14 @@ def hazard_aggregation_models(csv_path, limit=100):
 # @mock_dynamodb
 # def setup_module():
 #     model.migrate()
-#     ths_model.migrate()
+#     model.migrate()
 #     csv_hazard = Path(__file__).parent / 'fixtures' / 'sample_hazard_data.csv'
 #     # load fixture and create sample hazard_curves
 #     for haz in hazard_aggregation_models(csv_hazard):
 #         haz.save()
 
 #     return True
-#     # for m in ths_model.HazardAggregation.scan():
+#     # for m in model.HazardAggregation.scan():
 #     #     time.sleep(0.01)
 #     #     pass
 #     # super(GriddedHazardTest, self).setUp()
@@ -76,7 +75,7 @@ def hazard_aggregation_models(csv_path, limit=100):
 # @mock_dynamodb
 # def tearDown(self):
 #     model.drop_tables()
-#     ths_model.drop_tables()
+#     model.drop_tables()
 #     return super(GriddedHazardTest, self).tearDown()
 
 
@@ -90,14 +89,14 @@ class GriddedHazardTest(unittest.TestCase):
 
         """
         model.migrate()
-        ths_model.migrate()
+        model.migrate()
         csv_hazard = Path(__file__).parent / 'fixtures' / 'sample_hazard_data.csv'
         # load fixture and create sample hazard_curves
         for haz in hazard_aggregation_models(csv_hazard, 200):
             haz.save()
 
         hag_cnt = 0
-        for m in ths_model.HazardAggregation.scan():
+        for m in model.HazardAggregation.scan():
             hag_cnt += 1
 
         assert hag_cnt == 200
@@ -137,7 +136,7 @@ class GriddedHazardTest(unittest.TestCase):
         # test we can retrieve something
         count = 0
         poes = 0
-        for ghaz in model.get_gridded_hazard([HAZARD_MODEL_ID], [location_grid_id], vs30s, imts, aggs, poe_levels):
+        for ghaz in query.get_gridded_hazard([HAZARD_MODEL_ID], [location_grid_id], vs30s, imts, aggs, poe_levels):
             poes += len(list(filter(lambda x: x is not None, ghaz.grid_poes)))
             count += 1
 
