@@ -72,14 +72,14 @@ dev = ["build (==0.8.0)", "flake8 (==4.0.1)", "hashin (==0.17.0)", "pip-tools (=
 
 [[package]]
 name = "boto3"
-version = "1.24.54"
+version = "1.24.55"
 description = "The AWS SDK for Python"
 category = "dev"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.54,<1.28.0"
+botocore = ">=1.27.55,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -88,7 +88,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.54"
+version = "1.27.55"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -1179,7 +1179,7 @@ jeepney = ">=0.6"
 
 [[package]]
 name = "setuptools"
-version = "65.0.2"
+version = "65.1.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
@@ -1276,8 +1276,8 @@ doc = []
 [package.source]
 type = "git"
 url = "https://github.com/GNS-Science/toshi-hazard-store.git"
-reference = "2d4a9c4edc8096dc30226673d53c016ea5cabe61"
-resolved_reference = "2d4a9c4edc8096dc30226673d53c016ea5cabe61"
+reference = "f491e4167b4840ef8e36512f72480a737290aa5f"
+resolved_reference = "f491e4167b4840ef8e36512f72480a737290aa5f"
 
 [[package]]
 name = "tox"
@@ -1453,7 +1453,7 @@ test = []
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "919a40015ed6234d59d33c9e3e37f13d32371afc27ec379e05feb6378c3a6c43"
+content-hash = "0936ed3acf65e87e0bed58e855998a040b46a614e19f2ff04ba242aeea44955e"
 
 [metadata.files]
 astunparse = [
@@ -1497,12 +1497,12 @@ bleach = [
     {file = "bleach-5.0.1.tar.gz", hash = "sha256:0d03255c47eb9bd2f26aa9bb7f2107732e7e8fe195ca2f64709fcf3b0a4a085c"},
 ]
 boto3 = [
-    {file = "boto3-1.24.54-py3-none-any.whl", hash = "sha256:70bf68f291ce40329ca95a1a9e33020027703bb30248da214b46642c5df0b444"},
-    {file = "boto3-1.24.54.tar.gz", hash = "sha256:732bbe266773125d233c77171978195bfd2fd03204ee1eec257a640c3e3dbd94"},
+    {file = "boto3-1.24.55-py3-none-any.whl", hash = "sha256:4b620f55f3015c516a8f8063b02060a7bb9a763e10de3c0f3ec90102cdfa28db"},
+    {file = "boto3-1.24.55.tar.gz", hash = "sha256:9fe6c7c5019671cbea82f02dbaae7e743ec86187443ab5f333ebb3d3bef63dce"},
 ]
 botocore = [
-    {file = "botocore-1.27.54-py3-none-any.whl", hash = "sha256:2d7631187d8f9f3e3a6dfd79fd10def4d26136a79fcc6a354b99352ea1ddfaec"},
-    {file = "botocore-1.27.54.tar.gz", hash = "sha256:811113dd97072b7f157a25a94d58ca2e6dd4577b8a6bdfe7e1fa6635adf64467"},
+    {file = "botocore-1.27.55-py3-none-any.whl", hash = "sha256:0b4a17e81c17845245c0e7a3fbf83753c7f6a5544b93dcf6e0fcc0f3f2156ab2"},
+    {file = "botocore-1.27.55.tar.gz", hash = "sha256:929d6be4bdb33a693e6c8e06383dba76fa628bb72fdb1f9353fd13f5d115dd19"},
 ]
 bump2version = [
     {file = "bump2version-1.0.1-py2.py3-none-any.whl", hash = "sha256:37f927ea17cde7ae2d7baf832f8e80ce3777624554a653006c9144f8017fe410"},
@@ -2297,8 +2297,8 @@ secretstorage = [
     {file = "SecretStorage-3.3.3.tar.gz", hash = "sha256:2403533ef369eca6d2ba81718576c5e0f564d5cca1b58f73a8b23e7d4eeebd77"},
 ]
 setuptools = [
-    {file = "setuptools-65.0.2-py3-none-any.whl", hash = "sha256:39275e7aafa4a4f0f4308f2302c6ee384dcdacdbaacc1e30dcbb6fd824c625bb"},
-    {file = "setuptools-65.0.2.tar.gz", hash = "sha256:101bf15ca723beef42c8db91a761f3748d4d697e17fae904db60c0b619d8d094"},
+    {file = "setuptools-65.1.0-py3-none-any.whl", hash = "sha256:10602cd0a6f5feab6656e9587f9075292ab777c5200f3bf00293ecd23d9f2788"},
+    {file = "setuptools-65.1.0.tar.gz", hash = "sha256:d2e010624c781b26ad6629a8de9832327cf853dea93894487979e55f9ad06857"},
 ]
 setuptools-scm = [
     {file = "setuptools_scm-6.4.2-py3-none-any.whl", hash = "sha256:acea13255093849de7ccb11af9e1fb8bde7067783450cee9ef7a93139bddf6d4"},
