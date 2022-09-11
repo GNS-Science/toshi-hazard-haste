@@ -3,8 +3,9 @@
 import itertools
 import logging
 import multiprocessing
-from typing import Iterable, Iterator, List
 from collections import namedtuple
+from typing import Iterable, Iterator, List
+
 from nzshm_common.grids import RegionGrid
 from nzshm_common.location import CodedLocation
 from toshi_hazard_store import model, query_v3
@@ -35,7 +36,8 @@ def process_gridded_hazard(location_keys, poe_lvl, location_grid_id, hazard_mode
         agg=agg,
         poe=poe_lvl,
         grid_poes=grid_poes,
-        )
+    )
+
 
 class GriddedHAzardWorkerMP(multiprocessing.Process):
     """A worker that batches and saves records to DynamoDB. ported from THS."""
@@ -105,8 +107,9 @@ def calc_gridded_hazard(
     for w in workers:
         w.start()
 
-    for (poe_lvl, hazard_model_id, vs30, imt, agg)\
-        in itertools.product(poe_levels, hazard_model_ids, vs30s, imts, aggs):
+    for (poe_lvl, hazard_model_id, vs30, imt, agg) in itertools.product(
+        poe_levels, hazard_model_ids, vs30s, imts, aggs
+    ):
 
         t = GridHazTaskArgs(location_keys, poe_lvl, location_grid_id, hazard_model_id, vs30, imt, agg)
         task_queue.put(t)

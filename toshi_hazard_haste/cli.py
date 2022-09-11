@@ -124,7 +124,18 @@ def cli_geojson(hazard_model_ids, site_list, imts, aggs, vs30s, poes, config):
 @click.option('-m', '--migrate-tables', is_flag=True)
 @click.option('-w', '--num-workers', default=4, show_default=True)
 def cli_gridded_hazard(
-    hazard_model_ids, site_list, imts, aggs, vs30s, poes, config, list_site_lists, verbose, dry_run, migrate_tables, num_workers
+    hazard_model_ids,
+    site_list,
+    imts,
+    aggs,
+    vs30s,
+    poes,
+    config,
+    list_site_lists,
+    verbose,
+    dry_run,
+    migrate_tables,
+    num_workers,
 ):
     """Process gridded hazard for a given set of arguments."""
 
