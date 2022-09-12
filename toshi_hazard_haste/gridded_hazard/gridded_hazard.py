@@ -4,7 +4,7 @@ import itertools
 import logging
 import multiprocessing
 from collections import namedtuple
-from typing import Iterable, Iterator, List
+from typing import Iterable, List
 
 from nzshm_common.grids import RegionGrid
 from nzshm_common.location import CodedLocation
@@ -42,10 +42,9 @@ def process_gridded_hazard(location_keys, poe_lvl, location_grid_id, hazard_mode
 class GriddedHAzardWorkerMP(multiprocessing.Process):
     """A worker that batches and saves records to DynamoDB. ported from THS."""
 
-    def __init__(self, task_queue, result_queue):
+    def __init__(self, task_queue):
         multiprocessing.Process.__init__(self)
         self.task_queue = task_queue
-        self.result_queue = result_queue
 
     def run(self):
         log.info("worker %s running." % self.name)
@@ -63,10 +62,10 @@ class GriddedHAzardWorkerMP(multiprocessing.Process):
                 for ghaz in process_gridded_hazard(*nt):
                     if SPOOF_SAVE is False:
                         batch.save(ghaz)
+                        print('save', ghaz)
 
             self.task_queue.task_done()
             log.info('%s task done.' % self.name)
-            self.result_queue.put(True)
 
 
 def calc_gridded_hazard(
@@ -100,10 +99,9 @@ def calc_gridded_hazard(
     log.debug('location_keys: %s' % location_keys)
 
     task_queue: multiprocessing.JoinableQueue = multiprocessing.JoinableQueue()
-    result_queue: multiprocessing.Queue = multiprocessing.Queue()
 
     log.debug('Creating %d workers' % num_workers)
-    workers = [GriddedHAzardWorkerMP(task_queue, result_queue) for i in range(num_workers)]
+    workers = [GriddedHAzardWorkerMP(task_queue) for i in range(num_workers)]
     for w in workers:
         w.start()
 
@@ -121,11 +119,5 @@ def calc_gridded_hazard(
 
     # Wait for all of the tasks to finish
     task_queue.join()
-
-    results = []
-    while num_jobs:
-        result = result_queue.get()
-        results.append(result)
-        num_jobs -= 1
 
     log.info('calc_gridded_hazard() produced %s gridded_hazard rows ' % count)
