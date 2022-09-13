@@ -25,7 +25,14 @@ def process_gridded_hazard(location_keys, poe_lvl, location_grid_id, hazard_mode
         accel_levels = [val.lvl for val in haz.values]
         poe_values = [val.val for val in haz.values]
         index = location_keys.index(haz.nloc_001)
-        grid_poes[index] = compute_hazard_at_poe(poe_lvl, accel_levels, poe_values, INVESTIGATION_TIME)
+        try:
+            grid_poes[index] = compute_hazard_at_poe(poe_lvl, accel_levels, poe_values, INVESTIGATION_TIME)
+        except ValueError as err:
+            log.warning(
+                'Error in compute_hazard_at_poe: %s, poe_lvl %s, haz_mod %s, vs30 %s, imt %s, agg %s'
+                % (err, poe_lvl, hazard_model_id, vs30, imt, agg)
+            )
+            continue
         log.debug('replaced %s with %s' % (index, grid_poes[index]))
 
     yield model.GriddedHazard.new_model(
