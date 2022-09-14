@@ -30,8 +30,9 @@ click = "8.0.1"
 pandas = "^1.4.3"
 toml = "^0.10.2"
 matplotlib = "^3.5.3"
-toshi-hazard-store = {git = "https://github.com/GNS-Science/toshi-hazard-store.git", rev = "11a8dc13e74dcaa02349a1fe7b326ac52937ceec"}
 geopandas = "^0.11.1"
+nzshm-common = "^0.3.2"
+toshi-hazard-store = {git = "https://github.com/GNS-Science/toshi-hazard-store.git", rev = "f491e4167b4840ef8e36512f72480a737290aa5f"}
 
 [tool.poetry.dev-dependencies]
 
