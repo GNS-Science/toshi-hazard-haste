@@ -3,6 +3,7 @@
 import itertools
 import logging
 import multiprocessing
+import numpy as np
 from collections import namedtuple
 from typing import Iterable, List
 
@@ -15,25 +16,44 @@ from .gridded_poe import compute_hazard_at_poe
 log = logging.getLogger(__name__)
 INVESTIGATION_TIME = 50
 SPOOF_SAVE = False
+COV_AGG_KEY = 'cov'
 
 GridHazTaskArgs = namedtuple("GridHazTaskArgs", "location_keys poe_lvl location_grid_id hazard_model_id vs30 imt agg")
 
 
 def process_gridded_hazard(location_keys, poe_lvl, location_grid_id, hazard_model_id, vs30, imt, agg):
-    grid_poes: List = [None for i in range(len(location_keys))]
+    grid_accel_levels: List = [None for i in range(len(location_keys))]
     for haz in query_v3.get_hazard_curves(location_keys, [vs30], [hazard_model_id], imts=[imt], aggs=[agg]):
         accel_levels = [val.lvl for val in haz.values]
         poe_values = [val.val for val in haz.values]
         index = location_keys.index(haz.nloc_001)
         try:
-            grid_poes[index] = compute_hazard_at_poe(poe_lvl, accel_levels, poe_values, INVESTIGATION_TIME)
+            grid_accel_levels[index] = compute_hazard_at_poe(poe_lvl, accel_levels, poe_values, INVESTIGATION_TIME)
         except ValueError as err:
             log.warning(
                 'Error in compute_hazard_at_poe: %s, poe_lvl %s, haz_mod %s, vs30 %s, imt %s, agg %s'
                 % (err, poe_lvl, hazard_model_id, vs30, imt, agg)
             )
             continue
-        log.debug('replaced %s with %s' % (index, grid_poes[index]))
+        log.debug('replaced %s with %s' % (index, grid_accel_levels[index]))
+
+    if agg == 'mean':
+        grid_covs: List = [None for i in range(len(location_keys))]
+        for cov in query_v3.get_hazard_curves(location_keys, [vs30], [hazard_model_id], imts=[imt], aggs=[COV_AGG_KEY]):
+            # cov_accel_levels = [val.lvl for val in cov.values]
+            cov_values = [val.val for val in cov.values]
+            index = location_keys.index(cov.nloc_001)
+            grid_covs[index] = np.exp( np.interp(np.log(grid_accel_levels[index]), np.log(accel_levels), np.log(cov_values)) )
+
+        yield model.GriddedHazard.new_model(
+            hazard_model_id=hazard_model_id,
+            location_grid_id=location_grid_id,
+            vs30=vs30,
+            imt=imt,
+            agg=COV_AGG_KEY,
+            poe=poe_lvl,
+            grid_poes=grid_covs,
+        )
 
     yield model.GriddedHazard.new_model(
         hazard_model_id=hazard_model_id,
@@ -47,7 +67,7 @@ def process_gridded_hazard(location_keys, poe_lvl, location_grid_id, hazard_mode
 
 
 class GriddedHAzardWorkerMP(multiprocessing.Process):
-    """A worker that batches and saves records to DynamoDB. ported from THS."""
+    """A worker that batches and saves records to DynamoDB."""
 
     def __init__(self, task_queue):
         multiprocessing.Process.__init__(self)
@@ -93,7 +113,7 @@ def calc_gridded_hazard(
     count = 0
     grid = RegionGrid[location_grid_id]
 
-    print(grid.resolution)
+    # print(grid.resolution)
     locations = list(
         map(lambda grd_loc: CodedLocation(grd_loc[0], grd_loc[1], resolution=grid.resolution), grid.load())
     )
