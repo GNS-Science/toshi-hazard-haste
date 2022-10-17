@@ -3,10 +3,10 @@
 import itertools
 import logging
 import multiprocessing
-import numpy as np
 from collections import namedtuple
 from typing import Iterable, List
 
+import numpy as np
 from nzshm_common.grids import RegionGrid
 from nzshm_common.location import CodedLocation
 from toshi_hazard_store import model, query_v3
@@ -43,7 +43,9 @@ def process_gridded_hazard(location_keys, poe_lvl, location_grid_id, hazard_mode
             # cov_accel_levels = [val.lvl for val in cov.values]
             cov_values = [val.val for val in cov.values]
             index = location_keys.index(cov.nloc_001)
-            grid_covs[index] = np.exp( np.interp(np.log(grid_accel_levels[index]), np.log(accel_levels), np.log(cov_values)) )
+            grid_covs[index] = np.exp(
+                np.interp(np.log(grid_accel_levels[index]), np.log(accel_levels), np.log(cov_values))
+            )
 
         yield model.GriddedHazard.new_model(
             hazard_model_id=hazard_model_id,
@@ -62,7 +64,7 @@ def process_gridded_hazard(location_keys, poe_lvl, location_grid_id, hazard_mode
         imt=imt,
         agg=agg,
         poe=poe_lvl,
-        grid_poes=grid_poes,
+        grid_poes=grid_accel_levels,
     )
 
 

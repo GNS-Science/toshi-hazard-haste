@@ -29,7 +29,11 @@ logging.getLogger('gql.transport.requests').setLevel(logging.WARN)
 formatter = logging.Formatter(fmt='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 screen_handler = logging.StreamHandler(stream=sys.stdout)
 screen_handler.setFormatter(formatter)
+file_handler = logging.FileHandler('thh.log')
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(formatter)
 log.addHandler(screen_handler)
+log.addHandler(file_handler)
 
 
 @click.group()
