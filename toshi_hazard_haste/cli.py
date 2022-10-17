@@ -12,8 +12,8 @@ import toml
 from nzshm_common.geometry.geometry import create_square_tile
 from nzshm_common.grids import RegionGrid
 from nzshm_common.location import CodedLocation
+from toshi_hazard_store import model
 
-from toshi_hazard_haste import model
 from toshi_hazard_haste.gridded_hazard import calc_gridded_hazard
 
 log = logging.getLogger()
@@ -22,14 +22,18 @@ logging.getLogger('nshm_toshi_client.toshi_client_base').setLevel(logging.INFO)
 logging.getLogger('urllib3').setLevel(logging.INFO)
 logging.getLogger('botocore').setLevel(logging.INFO)
 logging.getLogger('pynamodb').setLevel(logging.INFO)
-logging.getLogger('toshi_hazard_haste').setLevel(logging.DEBUG)
+logging.getLogger('toshi_hazard_haste').setLevel(logging.INFO)
 logging.getLogger('toshi_hazard_store').setLevel(logging.INFO)
 logging.getLogger('gql.transport.requests').setLevel(logging.WARN)
 
 formatter = logging.Formatter(fmt='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 screen_handler = logging.StreamHandler(stream=sys.stdout)
 screen_handler.setFormatter(formatter)
+file_handler = logging.FileHandler('thh.log')
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(formatter)
 log.addHandler(screen_handler)
+log.addHandler(file_handler)
 
 
 @click.group()
@@ -122,8 +126,20 @@ def cli_geojson(hazard_model_ids, site_list, imts, aggs, vs30s, poes, config):
 @click.option('-v', '--verbose', is_flag=True)
 @click.option('-d', '--dry-run', is_flag=True)
 @click.option('-m', '--migrate-tables', is_flag=True)
+@click.option('-w', '--num-workers', default=4, show_default=True)
 def cli_gridded_hazard(
-    hazard_model_ids, site_list, imts, aggs, vs30s, poes, config, list_site_lists, verbose, dry_run, migrate_tables
+    hazard_model_ids,
+    site_list,
+    imts,
+    aggs,
+    vs30s,
+    poes,
+    config,
+    list_site_lists,
+    verbose,
+    dry_run,
+    migrate_tables,
+    num_workers,
 ):
     """Process gridded hazard for a given set of arguments."""
 
@@ -175,17 +191,16 @@ def cli_gridded_hazard(
             else []
         )
         click.echo(filter_locations)
-        with model.GriddedHazard.batch_write() as batch:
-            for hazard_grid in calc_gridded_hazard(
-                location_grid_id=site_list,
-                poe_levels=poes,
-                hazard_model_ids=hazard_model_ids,
-                vs30s=vs30s,
-                imts=imts,
-                aggs=aggs,
-                filter_locations=filter_locations,
-            ):
-                batch.save(hazard_grid)
+        calc_gridded_hazard(
+            location_grid_id=site_list,
+            poe_levels=poes,
+            hazard_model_ids=hazard_model_ids,
+            vs30s=vs30s,
+            imts=imts,
+            aggs=aggs,
+            num_workers=num_workers,
+            filter_locations=filter_locations,
+        )
     except Exception as err:
         click.echo(err)
         raise click.UsageError('An error occurred, pls check usage.')
