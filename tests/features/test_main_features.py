@@ -13,7 +13,9 @@ import itertools
 from moto import mock_dynamodb
 
 from nzshm_common.grids.region_grid import load_grid
-from nzshm_common.location.code_location import CodedLocation
+
+# from nzshm_common.location.code_location import CodedLocation
+from nzshm_common.location.coded_location import CodedLocation
 
 from toshi_hazard_store import model
 
@@ -29,7 +31,7 @@ N_LVLS = 29
 def build_hazard_aggregation_models():
 
     lvps = list(map(lambda x: model.LevelValuePairAttribute(lvl=x / 1e3, val=(x / 1e6)), range(1, N_LVLS)))
-    for (loc, vs30, agg) in itertools.product(LOCS, VS30S, AGGS):
+    for loc, vs30, agg in itertools.product(LOCS, VS30S, AGGS):
         for imt, val in enumerate(IMTS):
             yield model.HazardAggregation(
                 values=lvps,

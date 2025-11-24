@@ -4,7 +4,7 @@ import itertools
 import logging
 import multiprocessing
 from collections import namedtuple
-from typing import Iterable, List
+from typing import Iterable, List, Optional
 
 import numpy as np
 from nzshm_common.grids import RegionGrid
@@ -105,7 +105,7 @@ def calc_gridded_hazard(
     imts: Iterable[str],
     aggs: Iterable[str],
     num_workers: int,
-    filter_locations: Iterable[CodedLocation] = None,
+    filter_locations: Optional[Iterable[CodedLocation]] = None,
 ):
 
     log.debug(
@@ -134,9 +134,7 @@ def calc_gridded_hazard(
     for w in workers:
         w.start()
 
-    for (poe_lvl, hazard_model_id, vs30, imt, agg) in itertools.product(
-        poe_levels, hazard_model_ids, vs30s, imts, aggs
-    ):
+    for poe_lvl, hazard_model_id, vs30, imt, agg in itertools.product(poe_levels, hazard_model_ids, vs30s, imts, aggs):
 
         t = GridHazTaskArgs(location_keys, poe_lvl, location_grid_id, hazard_model_id, vs30, imt, agg)
         task_queue.put(t)

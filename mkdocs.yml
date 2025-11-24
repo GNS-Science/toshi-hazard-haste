@@ -3,6 +3,9 @@ site_url: https://gns-science.github.io/toshi-hazard-haste
 repo_url: https://github.com/gns-science/toshi-hazard-haste
 repo_name: gns-science/toshi-hazard-haste
 #strict: true
+watch:
+  - toshi_hazard_haste
+  - docs
 nav:
   - Home: index.md
   - Installation: installation.md
@@ -23,9 +26,9 @@ theme:
     - navigation.instant
     - navigation.tabs.sticky
 markdown_extensions:
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+  # - pymdownx.emoji:
+  #     emoji_index: !!python/name:materialx.emoji.twemoji
+  #     emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.critic
   - pymdownx.caret
   - pymdownx.mark
@@ -43,15 +46,13 @@ markdown_extensions:
   - toc:
       baselevel: 2
       permalink: true
-      slugify: !!python/name:pymdownx.slugs.uslugify
+      # slugify: !!python/name:pymdownx.slugs.uslugify
   - meta
 plugins:
   - include-markdown
   - search:
       lang: en
-  - mkdocstrings:
-      watch:
-        - toshi_hazard_haste
+  - mkdocstrings
 extra:
   social:
     - icon: fontawesome/brands/github
